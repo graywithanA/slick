@@ -1,7 +1,7 @@
 {
     "name": "slick-carousel-lazy-background",
     "main": ["slick/slick.js", "slick/slick.css", "slick/slick-theme.css", "slick/fonts/*"],
-    "version": "1.5.8",
+    "version": "1.5.8.1",
     "homepage": "https://github.com/graywithanA/slick",
     "authors": [
         "Ken Wheeler <ken_wheeler@me.com>",
