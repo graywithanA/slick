@@ -516,7 +516,7 @@
             _.options.slidesToScroll = 1;
         }
 
-        $('img[data-lazy]', _.$slider).not('[src]').addClass('slick-loading');
+        $('div[data-lazy]', _.$slider).not('[style*="background-image"]').addClass('slick-loading');
 
         _.setupInfinite();
 
@@ -1331,27 +1331,21 @@
             loadRange, cloneRange, rangeStart, rangeEnd;
 
         function loadImages(imagesScope) {
-            $('img[data-lazy]', imagesScope).each(function() {
+            $(imagesScope).each(function() {
 
-                var image = $(this),
-                    imageSource = $(this).attr('data-lazy'),
-                    imageToLoad = document.createElement('img');
+                var div = $(this),
+                    backgroundImageSource = $(this).attr('data-lazy');
 
-                imageToLoad.onload = function() {
-                    image
-                        .animate({ opacity: 0 }, 100, function() {
-                            image
-                                .attr('src', imageSource)
-                                .animate({ opacity: 1 }, 200, function() {
-                                    image
-                                        .removeAttr('data-lazy')
-                                        .removeClass('slick-loading');
-                                });
-                        });
-                };
-
-                imageToLoad.src = imageSource;
-
+                div
+                    .animate({ opacity: 0 }, 100, function() {
+                        div
+                            .css('background-image', backgroundImageSource)
+                            .animate({ opacity: 0.4 }, 200, function() {
+                                div
+                                    .removeAttr('data-lazy')
+                                    .removeClass('slick-loading');
+                            });
+                    });
             });
         }
 
@@ -1490,11 +1484,11 @@
         var _ = this,
             imgCount, targetImage;
 
-        imgCount = $('img[data-lazy]', _.$slider).length;
+        imgCount = $('div[data-lazy]', _.$slider).length;
 
         if (imgCount > 0) {
-            targetImage = $('img[data-lazy]', _.$slider).first();
-            targetImage.attr('src', targetImage.attr('data-lazy')).removeClass('slick-loading').load(function() {
+            targetImage = $('div[data-lazy]', _.$slider).first();
+            targetImage.css('background-image', targetImage.attr('data-lazy')).removeClass('slick-loading').load(function() {
                     targetImage.removeAttr('data-lazy');
                     _.progressiveLazyLoad();
 
@@ -1512,22 +1506,8 @@
 
     Slick.prototype.refresh = function( initializing ) {
 
-        var _ = this, currentSlide, firstVisible;
-
-        firstVisible = _.slideCount - _.options.slidesToShow;
-
-        // check that the new breakpoint can actually accept the
-        // "current slide" as the current slide, otherwise we need
-        // to set it to the closest possible value.
-        if ( !_.options.infinite ) {
-            if ( _.slideCount <= _.options.slidesToShow ) {
-                _.currentSlide = 0;
-            } else if ( _.currentSlide > firstVisible ) {
-                _.currentSlide = firstVisible;
-            }
-        }
-
-         currentSlide = _.currentSlide;
+        var _ = this,
+            currentSlide = _.currentSlide;
 
         _.destroy(true);
 
