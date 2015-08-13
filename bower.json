@@ -1,12 +1,13 @@
 {
-    "name": "slick-carousel",
+    "name": "slick-carousel-lazy-background",
     "main": ["slick/slick.min.js", "slick/slick.css", "slick/slick-theme.css", "slick/fonts/*"],
     "version": "1.5.8",
-    "homepage": "https://github.com/kenwheeler/slick",
+    "homepage": "https://github.com/graywithanA/slick",
     "authors": [
-        "Ken Wheeler <ken_wheeler@me.com>"
+        "Ken Wheeler <ken_wheeler@me.com>",
+        "Travis Gray"
     ],
-    "description": "the last carousel you'll ever need",
+    "description": "Modified slick-carousel to set background image instead of src during lazy loading",
     "keywords": [
         "responsive",
         "carousel",
