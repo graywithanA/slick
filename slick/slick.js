@@ -1336,16 +1336,25 @@
                 var div = $(this),
                     backgroundImageSource = $(this).attr('data-lazy');
 
-                div
-                    .animate({ opacity: 0 }, 100, function() {
-                        div
-                            .css('background-image', backgroundImageSource)
-                            .animate({ opacity: 0.4 }, 200, function() {
-                                div
-                                    .removeAttr('data-lazy')
-                                    .removeClass('slick-loading');
-                            });
-                    });
+                if (backgroundImageSource !== undefined) {
+                    div.find('.spinner').addClass('vjs-loading-spinner');
+                    var src = backgroundImageSource.slice(4, -1);
+                    $('<img>')
+                        .on('load', function() {
+                            div
+                                .animate({ opacity: 0 }, 100, function() {
+                                    div.find('.spinner').removeClass('vjs-loading-spinner');
+                                    div
+                                        .css('background-image', backgroundImageSource)
+                                        .animate({ opacity: 0.4 }, 200, function() {
+                                            div
+                                                .removeAttr('data-lazy')
+                                                .removeClass('slick-loading');
+                                        });
+                                });
+                        })
+                        .attr('src', src)
+                }
             });
         }
 
