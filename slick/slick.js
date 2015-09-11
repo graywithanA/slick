@@ -516,7 +516,7 @@
             _.options.slidesToScroll = 1;
         }
 
-        $('div[data-lazy]', _.$slider).not('[style*="background-image"]').addClass('slick-loading');
+        $('img[data-lazy]', _.$slider).not('[src]').addClass('slick-loading');
 
         _.setupInfinite();
 
@@ -1331,30 +1331,31 @@
             loadRange, cloneRange, rangeStart, rangeEnd;
 
         function loadImages(imagesScope) {
-            $(imagesScope).each(function() {
+            $('img[data-lazy]', imagesScope).each(function() {
 
-                var div = $(this),
-                    backgroundImageSource = $(this).attr('data-lazy');
+                var image = $(this),
+                    imageSource = $(this).attr('data-lazy'),
+                    imageToLoad = document.createElement('img');
 
-                if (backgroundImageSource !== undefined) {
-                    div.find('.spinner').addClass('vjs-loading-spinner');
-                    var src = backgroundImageSource.slice(4, -1);
-                    $('<img>')
-                        .on('load', function() {
-                            div
-                                .animate({ opacity: 0 }, 100, function() {
-                                    div.find('.spinner').removeClass('vjs-loading-spinner');
-                                    div
-                                        .css('background-image', backgroundImageSource)
-                                        .animate({ opacity: 0.4 }, 200, function() {
-                                            div
-                                                .removeAttr('data-lazy')
-                                                .removeClass('slick-loading');
-                                        });
+                var spinner = image.siblings('.spinner');
+                spinner.addClass('vjs-loading-spinner');
+
+                imageToLoad.onload = function() {
+                    image
+                        .animate({ opacity: 0 }, 100, function() {
+                            spinner.removeClass('vjs-loading-spinner');
+                            image
+                                .attr('src', imageSource)
+                                .animate({ opacity: 0.5 }, 200, function() {
+                                    image
+                                        .removeAttr('data-lazy')
+                                        .removeClass('slick-loading');
                                 });
-                        })
-                        .attr('src', src)
-                }
+                        });
+                };
+
+                imageToLoad.src = imageSource;
+
             });
         }
 
@@ -1493,11 +1494,11 @@
         var _ = this,
             imgCount, targetImage;
 
-        imgCount = $('div[data-lazy]', _.$slider).length;
+        imgCount = $('img[data-lazy]', _.$slider).length;
 
         if (imgCount > 0) {
-            targetImage = $('div[data-lazy]', _.$slider).first();
-            targetImage.css('background-image', targetImage.attr('data-lazy')).removeClass('slick-loading').load(function() {
+            targetImage = $('img[data-lazy]', _.$slider).first();
+            targetImage.attr('src', targetImage.attr('data-lazy')).removeClass('slick-loading').load(function() {
                     targetImage.removeAttr('data-lazy');
                     _.progressiveLazyLoad();
 
