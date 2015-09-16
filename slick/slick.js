@@ -1346,7 +1346,7 @@
                                     div.find('.spinner').removeClass('vjs-loading-spinner');
                                     div
                                         .css('background-image', backgroundImageSource)
-                                        .animate({ opacity: 0.4 }, 200, function() {
+                                        .animate({ opacity: 1 }, 200, function() {
                                             div
                                                 .removeAttr('data-lazy')
                                                 .removeClass('slick-loading');
